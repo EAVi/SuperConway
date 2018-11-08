@@ -15,6 +15,12 @@ void conway(int shift, char* source, char* destination)
 		source[i] = destination[i];
 }
 
+void conway(int shift, char* source, char* destination, int numloops)
+{
+	for(int i = 0; i < numloops; ++i)
+		conway(shift, source, destination);
+}
+
 void conway_print(int shift, char* source)
 {
 	int dimension_size = (1 << shift);

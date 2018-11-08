@@ -1,21 +1,28 @@
 #include <iostream>
 #include "conway_macros.h"
 #include "conway.h"
+#include <cstdio>
+#include <cstdlib>
 
 using namespace std;
 
 int main(int argc, char * args[])
 {
-	int shift = 2;//
-	char a[16] = {
-		0,1,0,0,
-		0,0,1,0,
-		1,1,1,0,
-		0,0,0,0};
-	char b[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	int seed = 1;
+	srand(seed);
+	int shift = 12;//the dimensions will be (2^shift)^2
+	char *a = (char*)malloc(sizeof(char) * CELL_SIZE(shift));
+	char *b = (char*)malloc(sizeof(char) * CELL_SIZE(shift));
+
+	//randomize the data
+	for(int i = 0, csize = CELL_SIZE(shift); i < csize; ++i)
+		a[i] = rand() % 2;
 	
+	//do some number of steps, and print each
 	conway(shift, a, b);
-	conway_print(shift, a);
-	
+
+	free(a);
+	free(b);
+
 	return 0;
 }
