@@ -1,5 +1,6 @@
 #include <iostream>
 #include "conway_macros.h"
+#include "cuda_conway.h"
 #include "conway.h"
 #include <cstdio>
 #include <cstdlib>
