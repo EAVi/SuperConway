@@ -35,4 +35,23 @@ void conway_print(int shift, char* source)
 		}
 		printf("\n");
 	}
+	printf("\n");
+}
+
+void conway_print_bounded(int shift, char* source, int x1, int x2, int y1, int y2)
+{
+        int dimension_size = (1 << shift);
+        int total_size = CELL_SIZE(shift);
+        for(int y = y1; y < y2; ++y)
+        {
+                for(int x = x1; x < x2; ++x)
+                {
+                        if(CHECK_CELL_LIVING(x,y,shift,source))
+                                printf("#");
+                        else printf("-");
+                }
+                printf("\n");
+        }
+        printf("\n");
+
 }

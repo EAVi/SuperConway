@@ -9,18 +9,18 @@ using namespace std;
 
 int main(int argc, char * args[])
 {
-	int seed = 1;
+	const int seed = 1;
 	srand(seed);
-	int shift = 12;//the dimensions will be (2^shift)^2
+	int shift = 14;//the dimensions will be (2^shift)^2
 	char *a = (char*)malloc(sizeof(char) * CELL_SIZE(shift));
 	char *b = (char*)malloc(sizeof(char) * CELL_SIZE(shift));
 
 	//randomize the data
 	for(int i = 0, csize = CELL_SIZE(shift); i < csize; ++i)
 		a[i] = rand() % 2;
-	
-	//do some number of steps, and print each
-	conway(shift, a, b);
+
+	//do single step, and print each
+	cuda_launch_conway(shift, &a, &b);
 
 	free(a);
 	free(b);
