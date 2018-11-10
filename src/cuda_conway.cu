@@ -13,7 +13,7 @@ bool cuda_launch_conway(int shift, char** a, char** b)
 	}
 	
 	//size constants
-	int csize = CELL_SIZE(shift);
+	int csize = BINARR_SIZE(CELL_SIZE(shift));
 	int dimension = (1 << shift);
 	int csizemem = (csize * sizeof(char));
 

@@ -5,7 +5,7 @@
 void conway(int shift, char* source, char* destination)
 {
 	int dimension_size = (1 << shift);
-	int total_size = CELL_SIZE(shift);
+	int total_size = BINARR_SIZE(CELL_SIZE(shift));
 	for(int y = 0; y < dimension_size; ++y)
 		for(int x = 0; x < dimension_size; ++x)
 			NEXT_CELL(x,y,shift,source,destination);
