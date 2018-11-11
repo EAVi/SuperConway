@@ -11,11 +11,16 @@ bool cuda_launch_conway(int shift, char** a, int numloops, int xmin, int xmax)
 		printf("NULL pointer passed\n");
 		return false;
 	}
-	
-	//size constants
+
+	//size definitions
 	int csize = BINARR_SIZE(CELL_SIZE(shift));
 	int dimension = (1 << shift);
 	int csizemem = (csize * sizeof(char));
+	if((xmin == -1) || (xmax == -1))
+	{
+		xmin = 0;
+		xmax = dimension;
+	}
 
 	//device problem distribution
 	int blocksize = 128;
@@ -33,7 +38,7 @@ bool cuda_launch_conway(int shift, char** a, int numloops, int xmin, int xmax)
 	
 	for(int i = 0; i < numloops; ++i)
 	{
-		cuda_conway<<<numblocks,blocksize>>>(shift, device_source, device_destination);
+		cuda_conway<<<numblocks,blocksize>>>(shift, device_source, device_destination, xmin, xmax);
 		cuda_copyback<<<numblocks,blocksize>>>(shift, device_source, device_destination);
 	}
 	
@@ -48,7 +53,7 @@ bool cuda_launch_conway(int shift, char** a, int numloops, int xmin, int xmax)
 }
 
 __global__
-void cuda_conway(int shift, char * a, char * b)
+void cuda_conway(int shift, char * a, char * b, int xmin, int xmax)
 {
 /*
 	data will be partitioned by x value on MPI, and partitioned by y value on CUDA
@@ -62,7 +67,7 @@ void cuda_conway(int shift, char * a, char * b)
 	int ymin = ASSIGN_MIN(dimension, griddim, gridid);
 	int ymax = ASSIGN_MAX(dimension, griddim, gridid);
 	for(int y = ymin; y < ymax; ++y)
-		for(int x = 0; x < dimension; ++x)
+		for(int x = xmin; x < xmax; ++x)
 			NEXT_CELL(x,y,shift,a,b);
 }
 

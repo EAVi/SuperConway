@@ -2,7 +2,7 @@
 #define CONWAY_H
 
 //do one iteration of the conway loop
-void conway(int shift, char* source, char* destination, int ymin = -1, int ymax = -1, int numloops = 1);
+void conway(int shift, char* source, char* destination, int numloops = 1, int ymin = -1, int ymax = -1);
 
 //conway loop using MPI
 void conway_mpi(int shift, char* source, char* destination, int numloops, bool use_cuda, int np, int rank);

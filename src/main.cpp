@@ -43,9 +43,9 @@ int main(int argc, char * args[])
 
 	//do single step, and print each
 	begin = MPI_Wtime();
-	conway_print_bounded(shift, a, 0, 8, 0, 8);
+	if (rank == 0) conway_print_bounded(shift, a, 0, 8, 0, 8);
 	conway_mpi(shift, a, b, 1, use_cuda, np, rank);
-	conway_print_bounded(shift, a, 0, 8, 0, 8);
+	if (rank == 0) conway_print_bounded(shift, a, 0, 8, 0, 8);
 	MPI_Barrier(MPI_COMM_WORLD);
 	end = MPI_Wtime();
 	diff = end - begin;

@@ -17,3 +17,10 @@ And if I do not plan on using CUDA:
 ```
 mpirun -hostfile hostfile sconway 14 0
 ```
+#### Performance:
+The amount of time to calculate the next generation is as followed.
+The CPU is an Intel i7-7700k, the GPU is a GTX 1050 Ti.
+
+| Number of cells | 1 CPU | 1 GPU | 4 CPU cores | 40 CPU cores | 10 GPUs |
+| --- | --- | --- | --- | --- | --- |
+| 2<sup>28</sup> | 46.098278 s  | 7.219610 s | 17.623471 s | 4.051098 s | 2.493765 s |

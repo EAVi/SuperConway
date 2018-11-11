@@ -9,7 +9,7 @@
 void conway(int shift, char* source, char* destination, int numloops, int ymin, int ymax)
 {
 	int dimension_size = (1 << shift);
-	if (ymin == -1)
+	if ((ymin == -1)||(ymax == -1))
 	{
 		ymin = 0;
 		ymax = dimension_size;
@@ -72,12 +72,12 @@ void conway_mpi(int shift, char* source, char* destination, int numloops, bool u
 	{
 		if(use_cuda)
 			cuda_launch_conway(shift, &source, 1, xmin, xmax);
-		else conway(shift, source, destination, xmin, xmax);
+		else conway(shift, source, destination, 1, xmin, xmax);
 
 		//reduce to a metadata array, and copy back
-		MPI_Allreduce(metadata, source, csize, MPI_CHAR, MPI_BOR, MPI_COMM_WORLD);
+		MPI_Allreduce(source, metadata, csize, MPI_CHAR, MPI_BOR, MPI_COMM_WORLD);
 		for(int j = 0; j < csize; ++j)
-			source[j] = metadata[i];
+			source[j] = metadata[j];
 	}
 	free(metadata);
 }
