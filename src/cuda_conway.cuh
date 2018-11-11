@@ -13,4 +13,7 @@
 __global__
 void cuda_conway(int shift, char * a, char * b);
 
+__global__
+void cuda_copyback(int shift, char * a, char * b);
+
 #endif

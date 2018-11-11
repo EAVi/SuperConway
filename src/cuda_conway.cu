@@ -4,9 +4,9 @@
 #include "scale.h"
 #include "cuda_conway.cuh"
 
-bool cuda_launch_conway(int shift, char** a, char** b)
+bool cuda_launch_conway(int shift, char** a, int numloops, int xmin, int xmax)
 {
-	if ((a == NULL) || (*a == NULL) || (b == NULL) || (*b == NULL))
+	if ((a == NULL) || (*a == NULL))
 	{
 		printf("NULL pointer passed\n");
 		return false;
@@ -31,10 +31,14 @@ bool cuda_launch_conway(int shift, char** a, char** b)
 	//copy a into source
 	CHECKERR( cudaMemcpy(device_source, *a, csizemem, cudaMemcpyHostToDevice) );
 	
-	cuda_conway<<<numblocks,blocksize>>>(shift, device_source, device_destination);
+	for(int i = 0; i < numloops; ++i)
+	{
+		cuda_conway<<<numblocks,blocksize>>>(shift, device_source, device_destination);
+		cuda_copyback<<<numblocks,blocksize>>>(shift, device_source, device_destination);
+	}
 	
 	//copy result from device
-	CHECKERR( cudaMemcpy(*b, device_destination, csizemem, cudaMemcpyDeviceToHost) );
+	CHECKERR( cudaMemcpy(*a, device_destination, csizemem, cudaMemcpyDeviceToHost) );
 	
 	//free
 	CHECKERR( cudaFree(device_source) );
@@ -61,3 +65,21 @@ void cuda_conway(int shift, char * a, char * b)
 		for(int x = 0; x < dimension; ++x)
 			NEXT_CELL(x,y,shift,a,b);
 }
+
+
+__global__
+void cuda_copyback(int shift, char * a, char * b)
+{
+	int dimension = (1 << shift);
+	int gridid = blockIdx.x * blockDim.x + threadIdx.x;
+	int griddim = blockDim.x * gridDim.x;
+
+	int ymin = (ASSIGN_MIN(dimension, griddim, gridid) >> 3);
+	int ymax = (ASSIGN_MAX(dimension, griddim, gridid) >> 3);
+
+	int imin = ymin * dimension;
+	int imax = ymax * dimension;
+	for(int i = imin; i < imax; ++i)
+		a[i] = b[i];
+}
+

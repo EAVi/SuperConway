@@ -2,10 +2,10 @@
 #define CONWAY_H
 
 //do one iteration of the conway loop
-void conway(int shift, char* source, char* destination);
+void conway(int shift, char* source, char* destination, int ymin = -1, int ymax = -1, int numloops = 1);
 
-//overload do some number of loops
-void conway(int shift, char* source, char* destination, int numloops);
+//conway loop using MPI
+void conway_mpi(int shift, char* source, char* destination, int numloops, bool use_cuda, int np, int rank);
 
 //print conway's life
 void conway_print(int shift, char* source);
