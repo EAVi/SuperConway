@@ -23,7 +23,7 @@ bool cuda_launch_conway(int shift, char** a, int numloops, int xmin, int xmax)
 	}
 
 	//device problem distribution
-	int blocksize = 128;
+	int blocksize = 256;
 	int numblocks = (blocksize + dimension - 1)/dimension;
 	
 	char* device_source = NULL;
