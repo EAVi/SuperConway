@@ -5,7 +5,7 @@ Conway's Game of life, to be used on a CUDA cluster
 - [x] Using MPI
 
 #### Arguments:
-1. integer shift S, where _n_ = <sup>S</sup> * 2<sup>S</sup>.
+1. integer shift S, where the number of cells _n_ = 2<sup>S</sup> * 2<sup>S</sup>.
 2. boolean usecuda, will call CUDA on 1, will use CPU on 0.
 
 ##### Running:
@@ -24,3 +24,6 @@ The CPU is an Intel i7-7700k, the GPU is a GTX 1050 Ti.
 | Number of cells | 1 CPU | 1 GPU | 4 CPU cores | 40 CPU cores | 10 GPUs |
 | --- | --- | --- | --- | --- | --- |
 | 2<sup>28</sup> | 46.098278 s  | 3.999100 s | 17.623471 s | 4.051098 s |  2.186178 s |
+
+#### Complexity:
+The complexity clearly is &in; __&Theta;__(_n_), where the number of cells _n_ = 2<sup>S</sup> * 2<sup>S</sup>.
